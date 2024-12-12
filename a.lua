@@ -12,6 +12,20 @@ local map_1 = {
 	"...............",
 }
 
+local function get_xy (str)
+	local count = 0
+	local t = {}
+	local exp = "%S+"
+	for word in string.gmatch(str, exp) do
+		table.insert(t, word)
+		count = count + 1
+		if count == 2 then
+			break
+		end
+	end
+	return t
+end
+
 local function alter (str, id, c)
 	return str:sub(1, id-1) .. c .. str:sub(id+1)
 end
@@ -34,9 +48,13 @@ local function draw_map ()
 end
 
 local function handle_input (input)
-	if tonumber(input) then
-		local x = tonumber(input)
-		if x >= 1 and x <= w then move(x, 5) end
+	local t = get_xy(input)
+	if #t == 2 then
+		if tonumber(t[1]) and tonumber(t[2]) then
+			local x = tonumber(t[1])
+			local y = tonumber(t[2])
+			if x >= 1 and x <= w and y >= 1 and y <= h then move(x, y) end
+		end
 	end
 end
 
